@@ -22,3 +22,6 @@ ENV RACK_ENV=production
 # ENV DD_SERVICE=app
 # ENV DD_ENV=prod
 # ENV DD_VERSION=1.0
+
+# アセットプリコンパイル(SECRET_KEY_BASE_DUMMYを追加)
+RUN SECRET_KEY_BASE_DUMMY=1 rails assets:precompile
