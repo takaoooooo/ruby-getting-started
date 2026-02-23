@@ -1,25 +1,40 @@
 version: 2.1
 
+orbs:
+  heroku: circleci/heroku@2.0
 jobs:
-  build:
-    # Docker認証してイメージ取得
-    docker:
-      - image: captainkaeru/ruby-getting-started-app-prod:latest
-        auth:
-          username: $DOCKERHUB_LOGIN
-          password: $DOCKERHUB_PASSWORD
+  deploy:
+    executer: heroku/default
     steps:
-      # TODO: あとからコメント解除する
-      # - checkout
-      ## Dockerイメージにタグ付けする
-      # - run:
-      #     name: Tag Docker Image for Heroku
-      #     command: docker tag captainkaeru/ruby-getting-started-app-prod:latest registry.heroku.com/ruby-getting-started-app-prod/web
-      - run:
-          name: Notify Build Complete
-          command: echo "Build completed"
-
+      - checkout
+      - heroku/install
+      - heroku/deploy-via-git
 workflows:
-  deploy-prod:
+  heroku_deploy:
     jobs:
-      - build
+      - deploy    
+
+# NOTE: Dockerイメージビルドは使ってないので、コメントアウト
+# jobs:
+#   build:
+#     # Docker認証してイメージ取得
+#     docker:
+#       - image: captainkaeru/ruby-getting-started-app-prod:latest
+#         auth:
+#           username: $DOCKERHUB_LOGIN
+#           password: $DOCKERHUB_PASSWORD
+#     steps:
+#       # TODO: あとからコメント解除する
+#       # - checkout
+#       ## Dockerイメージにタグ付けする
+#       # - run:
+#       #     name: Tag Docker Image for Heroku
+#       #     command: docker tag captainkaeru/ruby-getting-started-app-prod:latest registry.heroku.com/ruby-getting-started-app-prod/web
+#       - run:
+#           name: Notify Build Complete
+#           command: echo "Build completed"
+
+# workflows:
+#   deploy-prod:
+#     jobs:
+#       - build
