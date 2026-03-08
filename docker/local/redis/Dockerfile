@@ -1,7 +1,6 @@
 FROM redis:7.0-alpine
 
-# システムの更新とタイムゾーン設定
-RUN apk update && apk add tzdata
+# タイムゾーン設定
 ENV TZ=Asia/Tokyo
 
 # 設定ファイルのコピー
