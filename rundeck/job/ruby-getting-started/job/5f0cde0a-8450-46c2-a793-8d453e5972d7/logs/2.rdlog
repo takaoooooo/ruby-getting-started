@@ -1,0 +1,11 @@
+^text/x-rundeck-log-v2.0^
+^2026-04-05T13:45:49Z|stepbegin||{node=0edab3433da6|step=1|stepctx=1|user=admin}|^
+^2026-04-05T13:45:49Z|nodebegin||{node=0edab3433da6|step=1|stepctx=1}|^
+^2026-04-05T13:45:49Z|||{node=0edab3433da6|step=1|stepctx=1}|/bin/sh: -c: line 1: syntax error near unexpected token `('^
+^2026-04-05T13:45:49Z|||{node=0edab3433da6|step=1|stepctx=1}|/bin/sh: -c: line 1: `docker exec app bundle exec rails runner HardWorker.perform_async('Sample', 1)'^
+^2026-04-05T13:45:49Z||ERROR|{node=0edab3433da6|step=1|stepctx=1}|Result: 2^
+^2026-04-05T13:45:49Z||ERROR|{node=0edab3433da6|step=1|stepctx=1}|Failed: NonZeroResultCode: Result code was 2^
+^2026-04-05T13:45:49Z|nodeend||{executionState=FAILED|failureReason=NonZeroResultCode|node=0edab3433da6|step=1|stepctx=1}|Result code was 2^
+^2026-04-05T13:45:49Z|stepend||{executionState=FAILED|failedNodes=0edab3433da6|failureReason=NodeDispatchFailure|node=0edab3433da6|step=1|stepctx=1|user=admin}|Node dispatch failed^
+^2026-04-05T13:45:50Z||ERROR|{node=0edab3433da6|user=admin}|Execution failed: 2 in project ruby-getting-started: [Workflow result: , step failures: {1=Dispatch failed on 1 nodes: [0edab3433da6: NonZeroResultCode: Result code was 2 + {dataContext=MultiDataContextImpl(map={ContextView(node:0edab3433da6)=BaseDataContext{{exec={exitCode=2}}}, ContextView(step:1, node:0edab3433da6)=BaseDataContext{{exec={exitCode=2}}}}, base=null)} ]}, Node failures: {0edab3433da6=[NonZeroResultCode: Result code was 2 + {dataContext=MultiDataContextImpl(map={ContextView(node:0edab3433da6)=BaseDataContext{{exec={exitCode=2}}}, ContextView(step:1, node:0edab3433da6)=BaseDataContext{{exec={exitCode=2}}}}, base=null)} ]}, status: failed]^
+^END^
