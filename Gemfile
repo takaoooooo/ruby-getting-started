@@ -37,3 +37,5 @@ gem "rack-timeout", "~> 0.7.0"
 # Use Datadog
 # TODO: datadogを使用するときにコメントアウト解除すること
 # gem 'ddtrace', require: 'ddtrace/auto_instrument'
+
+gem 'sidekiq'
