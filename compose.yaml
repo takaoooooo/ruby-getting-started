@@ -27,6 +27,7 @@ services:
       DB_HOST: db
       DB_USERNAME: root
       DB_PASSWORD: password
+      REDIS_URL: redis://redis:6379/0
       # appがdatadogライブラリを初期化する時に使用
       DATADOG_HOST: datadog
       # トレース送信先としてdd-agentを指定。
