@@ -2,7 +2,8 @@
 FROM ruby:3.4
 
 RUN apt-get update -qq && \
-  apt-get install -y build-essential default-libmysqlclient-dev nodejs vim
+  apt-get install -y build-essential default-libmysqlclient-dev nodejs vim \
+  ca-certificates rsyslog rsyslog-openssl gettext-base
 
 WORKDIR /app
 
@@ -12,6 +13,13 @@ COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 
 COPY . /app
+
+# Papertrail (SolarWinds) rsyslog設定
+COPY docker/rsyslog/99-solarwinds.conf /etc/rsyslog.d/99-solarwinds.conf.tmpl
+
+# エントリーポイントスクリプト
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
 
 # Rails環境変数
 ENV RAILS_ENV=production
