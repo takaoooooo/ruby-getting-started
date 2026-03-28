@@ -2,4 +2,4 @@ build:
   docker:
     web: Dockerfile.prod
 run:
-  web: bash /app/entrypoint.sh
+  web: bash -c "bundle exec puma -C config/puma.rb"
