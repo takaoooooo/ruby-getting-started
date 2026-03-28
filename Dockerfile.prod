@@ -4,7 +4,13 @@ FROM ruby:3.4
 RUN apt-get update -qq && \
   apt-get install -y build-essential default-libmysqlclient-dev nodejs vim \
   ca-certificates rsyslog rsyslog-openssl gettext-base && \
-  sed -i 's/^\$FileGroup adm/$FileGroup root/; s/^\$PrivDropToGroup adm/$PrivDropToGroup root/; s/^\$PrivDropToUser syslog/$PrivDropToUser root/' /etc/rsyslog.conf
+  sed -i \
+    's/^\$FileGroup adm/$FileGroup root/; s/^\$PrivDropToGroup adm/$PrivDropToGroup root/; s/^\$PrivDropToUser syslog/$PrivDropToUser root/' \
+    /etc/rsyslog.conf && \
+  sed -i \
+    's/^module(load="imuxsock")/#module(load="imuxsock")/; s/^module(load="imklog")/#module(load="imklog")/; s/^\$ModLoad imuxsock/#$ModLoad imuxsock/; s/^\$ModLoad imklog/#$ModLoad imklog/' \
+    /etc/rsyslog.conf && \
+  rm -f /etc/rsyslog.d/50-default.conf
 
 WORKDIR /app
 
