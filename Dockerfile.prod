@@ -4,7 +4,7 @@ FROM ruby:3.4
 RUN apt-get update -qq && \
   apt-get install -y build-essential default-libmysqlclient-dev nodejs vim \
   ca-certificates rsyslog rsyslog-openssl gettext-base && \
-  sed -i '/^\$PrivDropToGroup/d; /^\$PrivDropToUser/d' /etc/rsyslog.conf
+  sed -i 's/^\$FileGroup adm/$FileGroup root/; s/^\$PrivDropToGroup adm/$PrivDropToGroup root/; s/^\$PrivDropToUser syslog/$PrivDropToUser root/' /etc/rsyslog.conf
 
 WORKDIR /app
 
