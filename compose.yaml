@@ -42,25 +42,6 @@ services:
     depends_on:
       - db
       - datadog
-<<<<<<< HEAD
-  rundeck:
-    image: rundeck/rundeck:5.4.0
-    platform: linux/amd64
-    environment:
-      RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
-      RUNDECK_DATABASE_USERNAME: rundeck
-      RUNDECK_DATABASE_PASSWORD: rundeck
-      RUNDECK_DATABASE_URL: jdbc:mysql://db-rundeck/rundeck?autoReconnect=true&useSSL=false
-      RUNDECK_GRAILS_URL: http://localhost:4440
-    volumes:
-      - ./rundeck/data:/home/rundeck/server/data
-      - ./rundeck/job:/home/rundeck/var/logs/rundeck
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 4440:4440
-    depends_on:
-      - db-rundeck
-=======
   redis:
     container_name: redis
     build:
@@ -74,7 +55,26 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       - REDIS_PASSWORD=password
->>>>>>> b7b5184 (add:compose.yamlに追記)
+  rundeck:
+    build:
+      context: ./docker/local/rundeck
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    environment:
+      RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
+      RUNDECK_DATABASE_USERNAME: rundeck
+      RUNDECK_DATABASE_PASSWORD: rundeck
+      RUNDECK_DATABASE_URL: jdbc:mysql://db-rundeck/rundeck?autoReconnect=true&useSSL=false
+      RUNDECK_GRAILS_URL: http://localhost:4440
+    volumes:
+      - ./rundeck/data:/home/rundeck/server/data
+      - ./rundeck/job:/home/rundeck/var/logs/rundeck
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 4440:4440
+    depends_on:
+      - db-rundeck
   datadog:
     container_name: dd-agent
     build: datadog
