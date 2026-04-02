@@ -19,7 +19,9 @@ services:
       - rundeck_mysql_volume:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
   app:
-    build: ./docker/local/Dockerfile
+    build:
+      context: .
+      dockerfile: ./docker/local/Dockerfile
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     environment:
       DB_HOST: db
@@ -42,11 +44,12 @@ services:
       - datadog
   rundeck:
     image: rundeck/rundeck:5.4.0
+    platform: linux/amd64
     environment:
       RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
       RUNDECK_DATABASE_USERNAME: rundeck
       RUNDECK_DATABASE_PASSWORD: rundeck
-      RUNDECK_DATABASE_URL: jdbc:mysql://mysql/rundeck?autoReconnect=true&useSSL=false
+      RUNDECK_DATABASE_URL: jdbc:mysql://db-rundeck/rundeck?autoReconnect=true&useSSL=false
       RUNDECK_GRAILS_URL: http://localhost:4440
     volumes:
       - ./rundeck/data:/home/rundeck/server/data
