@@ -31,3 +31,7 @@ datadog/dd_api_key.txt
 
 # Rundeckのジョブログ
 /rundeck/job/
+
+# Redisの実行データ
+/.data/redis/*
+!/.data/redis/.keep
