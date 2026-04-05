@@ -1,4 +1,7 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq'
   resources :widgets
 
   # The priority is based upon order of creation: first created -> highest priority.
