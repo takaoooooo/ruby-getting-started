@@ -28,3 +28,6 @@ datadog/dd_api_key.txt
 
 # 環境変数ファイル（APIキーなどの機密情報を含む）
 .env
+
+# Rundeckのジョブログ
+/rundeck/job/
