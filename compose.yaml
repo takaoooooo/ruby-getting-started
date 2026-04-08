@@ -1,5 +1,6 @@
 services:
   db:
+    container_name: db
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -8,6 +9,7 @@ services:
       - mysql_volume:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
   db-rundeck:
+    container_name: db-rundeck
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -19,6 +21,7 @@ services:
       - rundeck_mysql_volume:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
   app:
+    container_name: app
     build:
       context: .
       dockerfile: ./docker/local/Dockerfile
@@ -57,6 +60,7 @@ services:
     environment:
       - REDIS_PASSWORD=password
   rundeck:
+    container_name: rundeck
     build:
       context: ./docker/local/rundeck
       dockerfile: Dockerfile
