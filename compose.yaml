@@ -1,5 +1,6 @@
 services:
   db:
+    container_name: db
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -7,7 +8,20 @@ services:
     volumes:
       - mysql_volume:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
+  db-rundeck:
+    container_name: db-rundeck
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: rundeck
+      MYSQL_USER: rundeck
+      MYSQL_PASSWORD: rundeck
+      TZ: Asia/Tokyo
+    volumes:
+      - rundeck_mysql_volume:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
   app:
+    container_name: app
     build:
       context: .
       dockerfile: ./docker/local/Dockerfile
@@ -31,6 +45,7 @@ services:
     depends_on:
       - db
       - datadog
+      - redis
   redis:
     container_name: redis
     build:
@@ -44,6 +59,27 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf
     environment:
       - REDIS_PASSWORD=password
+  rundeck:
+    container_name: rundeck
+    build:
+      context: ./docker/local/rundeck
+      dockerfile: Dockerfile
+    platform: linux/amd64
+    environment:
+      RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
+      RUNDECK_DATABASE_USERNAME: rundeck
+      RUNDECK_DATABASE_PASSWORD: rundeck
+      RUNDECK_DATABASE_URL: jdbc:mysql://db-rundeck/rundeck?autoReconnect=true&useSSL=false
+      RUNDECK_GRAILS_URL: http://localhost:4440
+    volumes:
+      - ./rundeck/data:/home/rundeck/server/data
+      - ./rundeck/job:/home/rundeck/var/logs/rundeck
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 4440:4440
+    depends_on:
+      - db-rundeck
   datadog:
     container_name: dd-agent
     build: datadog
@@ -66,3 +102,4 @@ services:
 
 volumes:
   mysql_volume: {}
+  rundeck_mysql_volume: {}
