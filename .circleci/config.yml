@@ -1,18 +1,32 @@
 version: 2.1
 
-orbs:
-  heroku: circleci/heroku@2.0
+# orbs:
+#   heroku: circleci/heroku@2.0
 jobs:
-  deploy:
-    executor: heroku/default
+  purge-all:
+    docker:
+      - image: cimg/base:stable
     steps:
-      - checkout
-      - heroku/install
-      - heroku/deploy-via-git
+      - run:  
+          name: Purge Fastly Cache
+          command:             curl -X POST \
+              -H "Fastly-Key: ${FASTLY_KEY}" \
+              -H "Accept: application/json" \
+              "https://api.fastly.com/service/${SERVICE_ID}/purge_all"
+      
+  # NOTE: 使わないのでコメントアウトした
+  # deploy:
+  #   executor: heroku/default
+  #   steps:
+  #     - checkout
+  #     - heroku/install
+  #     - heroku/deploy-via-git
+
 workflows:
   heroku_deploy:
     jobs:
-      - deploy    
+      - purge-all
+      # - deploy    
 
 # NOTE: Dockerイメージビルドは使ってないので、コメントアウト
 # jobs:
