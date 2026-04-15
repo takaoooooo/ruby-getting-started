@@ -9,7 +9,8 @@ jobs:
     steps:
       - run:  
           name: Purge Fastly Cache
-          command:             curl -X POST \
+          command: |
+            curl -X POST \
               -H "Fastly-Key: ${FASTLY_KEY}" \
               -H "Accept: application/json" \
               "https://api.fastly.com/service/${SERVICE_ID}/purge_all"
